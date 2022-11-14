@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
-// import { auth, provider } from "../firebase";
-// import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
 // import { async } from "@firebase/util";
 import { useNavigate } from "react-router-dom";
 const Container = styled.div`
@@ -83,33 +83,33 @@ const SignIn = () => {
       const res = await axios.post("/api/auth/signin", { username: name, password });
       console.log(res.data);
       dispatch(loginSuccess(res.data));
-      // navigate("/")
+      navigate("/")
     } catch (err) {
       console.log("Servers response:", err.response.data);
       dispatch(loginFailure());
     }
   };
 
-  // const signInWithGoogle = async () => {
-  //   dispatch(loginStart());
-  //   signInWithPopup(auth, provider)
-  //     .then((result) => {
-  //       axios
-  //         .post("/auth/google", {
-  //           name: result.user.displayName,
-  //           email: result.user.email,
-  //           img: result.user.photoURL,
-  //         })
-  //         .then((res) => {
-  //           console.log(res)
-  //           dispatch(loginSuccess(res.data));
-  //           navigate("/")
-  //         });
-  //     })
-  //     .catch((error) => {
-  //       dispatch(loginFailure());
-  //     });
-  // };
+  const signInWithGoogle = async () => {
+    dispatch(loginStart());
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        axios
+          .post("/auth/google", {
+            name: result.user.displayName,
+            email: result.user.email,
+            img: result.user.photoURL,
+          })
+          .then((res) => {
+            console.log(res)
+            dispatch(loginSuccess(res.data));
+            navigate("/")
+          });
+      })
+      .catch((error) => {
+        dispatch(loginFailure());
+      });
+  };
 
   //TODO: REGISTER FUNCTIONALITY
 
@@ -133,7 +133,7 @@ const SignIn = () => {
         >Sign in</Button>
         <Title>or</Title>
         <Button 
-          // onClick={signInWithGoogle}
+          onClick={signInWithGoogle}
         >
           Signin with Google</Button>
         <Title>or</Title>
