@@ -7,6 +7,7 @@ import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 // import { async } from "@firebase/util";
 import { useNavigate } from "react-router-dom";
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -94,17 +95,18 @@ const SignIn = () => {
     dispatch(loginStart());
     signInWithPopup(auth, provider)
       .then((result) => {
-        axios
-          .post("/auth/google", {
-            name: result.user.displayName,
-            email: result.user.email,
-            img: result.user.photoURL,
-          })
-          .then((res) => {
-            console.log(res)
-            dispatch(loginSuccess(res.data));
-            navigate("/")
-          });
+        console.log(result);
+        // axios
+        //   .post("/auth/google", {
+        //     name: result.user.displayName,
+        //     email: result.user.email,
+        //     img: result.user.photoURL,
+        //   })
+        //   .then((res) => {
+        //     console.log(res)
+        //     dispatch(loginSuccess(res.data));
+        //     navigate("/")
+        //   });
       })
       .catch((error) => {
         dispatch(loginFailure());
