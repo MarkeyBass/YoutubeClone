@@ -96,17 +96,17 @@ const SignIn = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result);
-        // axios
-        //   .post("/auth/google", {
-        //     name: result.user.displayName,
-        //     email: result.user.email,
-        //     img: result.user.photoURL,
-        //   })
-        //   .then((res) => {
-        //     console.log(res)
-        //     dispatch(loginSuccess(res.data));
-        //     navigate("/")
-        //   });
+        axios
+          .post("api/auth/google", {
+            name: result.user.displayName,
+            email: result.user.email,
+            img: result.user.photoURL,
+          })
+          .then((res) => {
+            console.log(res)
+            dispatch(loginSuccess(res.data));
+            // navigate("/")
+          });
       })
       .catch((error) => {
         dispatch(loginFailure());

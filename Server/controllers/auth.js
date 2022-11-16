@@ -45,4 +45,8 @@ export const signin = async (req, res, next) => {
   }
 };
 
-export const googleAuth = async (req, res) => {};
+export const googleAuth = async (req, res, next) => {
+  try{
+    const user = User.findOne({email: req.body.email})
+  } catch (err) {}
+};
