@@ -105,7 +105,7 @@ const SignIn = () => {
           .then((res) => {
             console.log(res)
             dispatch(loginSuccess(res.data));
-            // navigate("/")
+            navigate("/")
           });
       })
       .catch((error) => {

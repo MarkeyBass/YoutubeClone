@@ -1,9 +1,17 @@
-import { AddTaskOutlined, ReplyOutlined, ThumbUpOutlined, ThumbDownOutlined } from "@mui/icons-material";
+import {
+  AddTaskOutlined,
+  ReplyOutlined,
+  ThumbUpOutlined,
+  ThumbDownOutlined,
+} from "@mui/icons-material";
 // import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Comments from "../components/Comments";
 import Card from "../components/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -19,7 +27,6 @@ const VideoWrapper = styled.div`
 `;
 const Recomendation = styled.div`
   flex: 2;
-
 `;
 
 const Title = styled.h1`
@@ -113,6 +120,31 @@ const VideoFrame = styled.video`
 `;
 
 const Video = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const path = useLocation();
+  const pathNameArr = path.pathname.split("/");
+  const videoId = pathNameArr[pathNameArr.length - 1];
+  console.log(videoId);
+
+  const [video, setVideo] = useState({});
+  const [channel, setChannel] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const videoRes = await axios.get(`api/video/find/${videoId}`);
+        const channelRes = await axios.get(`api/users/find/${videoRes.userId}`);
+        setVideo(videoRes.data);
+        setChannel(channelRes.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData()
+  }, [path]);
+
   return (
     <Container>
       <Content>
@@ -172,16 +204,16 @@ const Video = () => {
           </ChannelInfo>
           <Subscribe>Subscribe</Subscribe>
         </Channel>
-        <Hr/>
-        <Comments/>
+        <Hr />
+        <Comments />
       </Content>
       <Recomendation>
-        <Card type="sm"/>
-        <Card type="sm"/>
-        <Card type="sm"/>
-        <Card type="sm"/>
-        <Card type="sm"/>
-        <Card type="sm"/>
+        <Card type="sm" />
+        <Card type="sm" />
+        <Card type="sm" />
+        <Card type="sm" />
+        <Card type="sm" />
+        <Card type="sm" />
       </Recomendation>
     </Container>
   );

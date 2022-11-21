@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Video from "../pages/Video";
 import { format } from "timeago.js";
@@ -69,19 +69,19 @@ const Card = ({ type, video }) => {
     };
   }
   const [channel, setChannel] = useState({});
-  useEffect(() => {
-    const fetchChannels = async () => {
-      const res = await axios.get(`/api/users/find/${video.userId}`);
-      setChannel(res.data);
-      // console.log(res.data);
-    };
+  // useEffect(() => {
+  //   const fetchChannels = async () => {
+  //     const res = await axios.get(`/api/users/find/${video.userId}`);
+  //     setChannel(res.data);
+  //     console.log(res.data);
+  //   };
 
-    fetchChannels();
-  }, [video.userId]);
+  //   fetchChannels();
+  // }, [video.userId]);
 
   // {console.log(video.imageUrl)}
   return (
-    <Link to="/video/test" style={{ textDecoration: "none" }}>
+    <Link to={`/video/${video._id}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
         <Image
           // src={"https://i.ytimg.com/vi/aGN0pXIaCaA/hqdefault.jpg?sqp=-oaymwEcCPYBEIoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAKqe7a8qGlLHRiUa8DiMQlb6aYHQ"}
